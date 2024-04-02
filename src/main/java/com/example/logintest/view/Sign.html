@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+</head>
+<body>
+<h2>회원가입</h2>
+<form id="signupForm" action="/member/sign" method="post">
+    <label for="email">이메일:</label><br>
+    <input type="text" id="email" name="email"><br>
+    <label for="pwd">비밀번호:</label><br>
+    <input type="password" id="pwd" name="pwd"><br>
+    <label for="name">이름:</label><br>
+    <input type="text" id="name" name="name"><br><br>
+    <input type="submit" value="가입">
+</form>
+
+<script>
+    document.getElementById("signupForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // 기본 이벤트 제거 (페이지 리로딩 방지)
+
+        // AJAX 요청으로 회원가입 요청 보내기
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/member/sign");
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                window.location.href = "/signOk.html"; // 회원가입 성공 시 signOk.html로 이동
+            } else {
+                console.error("회원가입 실패:", xhr.responseText);
+                alert("회원가입에 실패했습니다. 다시 시도해주세요.");
+            }
+        };
+
+        var formData = new FormData(document.getElementById("signupForm"));
+        var jsonData = {};
+        formData.forEach(function(value, key) {
+            jsonData[key] = value;
+        });
+
+        xhr.send(JSON.stringify(jsonData));
+    });
+</script>
+
+</body>
+</html>

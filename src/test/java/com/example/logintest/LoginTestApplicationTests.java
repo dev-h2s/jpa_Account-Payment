@@ -2,7 +2,6 @@ package com.example.logintest;
 
 import com.example.logintest.repository.MemberRepository;
 import com.example.logintest.vo.Member;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
