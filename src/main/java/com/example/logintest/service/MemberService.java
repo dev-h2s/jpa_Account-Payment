@@ -20,23 +20,23 @@ public class MemberService {
 
 
 
-    public void memberJoin( MemberDto memberDto) throws Exception{
-        // 중복 아이디 검사
-        boolean exists = memberRepository.existsByEmail(memberDto.getEmail());
-        if (exists) {
-            throw new IllegalArgumentException("중복된 이메일 입니다");
-        }
-        if(!MemberUtil.isValidEmail(memberDto.getEmail())){
-            throw new IllegalArgumentException("잘못된 이메일 형식입니다.");
-        }
+        public void memberJoin( MemberDto memberDto) throws Exception{
+            // 중복 아이디 검사
+            boolean exists = memberRepository.existsByEmail(memberDto.getEmail());
+            if (exists) {
+                throw new IllegalArgumentException("중복된 이메일 입니다");
+            }
+            if(!MemberUtil.isValidEmail(memberDto.getEmail())){
+                throw new IllegalArgumentException("잘못된 이메일 형식입니다.");
+            }
 
-        Member member = Member.builder()
-                .email(memberDto.getEmail())
-                .name(memberDto.getName())
-                .pwd(memberDto.getPwd())
-                .age(memberDto.getAge())
-                .build();
+            Member member = Member.builder()
+                    .email(memberDto.getEmail())
+                    .name(memberDto.getName())
+                    .pwd(memberDto.getPwd())
+                    .age(memberDto.getAge())
+                    .build();
 
-            memberRepository.save(member);
-    }
+                memberRepository.save(member);
+        }
 }

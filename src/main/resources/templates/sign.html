@@ -1,60 +1,115 @@
-    <!DOCTYPE html>
-    <html lang="ko">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>회원가입</title>
-    </head>
-    <body>
-    <h2>회원가입</h2>
-    <form id="signupForm" action="/member/sign" method="post">
-        <label for="email">이메일:</label><br>
-        <input type="text" id="email" name="email"><br>
-        <button type="button" id="verifyEmail">이메일 인증</button><br>
-        <label for="pwd">비밀번호:</label><br>
-        <input type="password" id="pwd" name="pwd"><br>
-        <label for="name">이름:</label><br>
-        <input type="text" id="name" name="name"><br><br>
-        <label for="age">나이:</label><br>
-        <input type="text" id="age" name="age"><br><br>
-        <input type="submit" value="가입">
-    </form>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+</head>
+<body>
+<h2>회원가입</h2>
+<form id="signupForm" action="/member/sign" method="post">
+    <label for="email">이메일:</label><br>
+    <input type="text" id="email" name="email"><br>
+    <button type="button" id="checkEmail">중복 확인</button><br> <!-- 중복 확인 버튼 추가 -->
+    <label for="emailCode">이메일 인증 코드:</label><br> <!-- 이메일 인증 코드 입력란 추가 -->
+    <input type="text" id="emailCode" name="emailCode"><br>
+    <button type="button" id="verifyCode">인증 확인</button><br> <!-- 인증 확인 버튼 추가 -->
+    <label for="pwd">비밀번호:</label><br>
+    <input type="password" id="pwd" name="pwd"><br>
+    <label for="name">이름:</label><br>
+    <input type="text" id="name" name="name"><br><br>
+    <label for="age">나이:</label><br>
+    <input type="text" id="age" name="age"><br><br>
+    <input type="submit" value="가입">
+</form>
 
-    <script>
-        document.getElementById("signupForm").addEventListener("submit", function(event) {
-            event.preventDefault(); // 기본 제출 동작 방지
-
-            // 폼 데이터 수집
-            var formData = {
-                email: document.getElementById("email").value,
-                pwd: document.getElementById("pwd").value,
-                name: document.getElementById("name").value,
-                age: document.getElementById("age").value
-            };
-
-            // POST 요청 보내기
-            fetch('/member/sign', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            })
+<script>
+    document.getElementById("checkEmail").addEventListener("click", function() {
+        var email = document.getElementById("email").value;
+        if (email.trim() !== "") {
+            fetch('/member/checkEmail?email=' + email)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('서버 응답이 실패했습니다.');
                     }
-                    return response.text();
+                    return response.json();
                 })
                 .then(data => {
-                    alert(data); // 서버로부터의 응답 메시지 표시
-                    // 추가적인 작업 수행 가능
+                    if (data.available) {
+                        alert("사용 가능한 이메일입니다.");
+                    } else {
+                        alert("이미 사용 중인 이메일입니다.");
+                    }
                 })
                 .catch(error => {
                     console.error('오류 발생:', error);
-                    alert('회원가입 중 오류가 발생했습니다.');
+                    alert('이메일 중복 확인 중 오류가 발생했습니다.');
                 });
-        });
-    </script>
-    </body>
-    </html>
+        } else {
+            alert("이메일 주소를 입력하세요.");
+        }
+    });
+
+    document.getElementById("verifyCode").addEventListener("click", function() {
+        var code = document.getElementById("emailCode").value;
+        if (code.trim() !== "") {
+            fetch('/member/verifyCode?code=' + code)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('서버 응답이 실패했습니다.');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.valid) {
+                        alert("인증 코드가 올바릅니다.");
+                    } else {
+                        alert("올바르지 않은 인증 코드입니다.");
+                    }
+                })
+                .catch(error => {
+                    console.error('오류 발생:', error);
+                    alert('인증 코드 확인 중 오류가 발생했습니다.');
+                });
+        } else {
+            alert("인증 코드를 입력하세요.");
+        }
+    });
+
+    document.getElementById("signupForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // 기본 제출 동작 방지
+
+        // 폼 데이터 수집
+        var formData = {
+            email: document.getElementById("email").value,
+            pwd: document.getElementById("pwd").value,
+            name: document.getElementById("name").value,
+            age: document.getElementById("age").value
+        };
+
+        // POST 요청 보내기
+        fetch('/member/sign', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('서버 응답이 실패했습니다.');
+                }
+                return response.text();
+            })
+            .then(data => {
+                alert(data); // 서버로부터의 응답 메시지 표시
+                // 추가적인 작업 수행 가능
+            })
+            .catch(error => {
+                console.error('오류 발생:', error);
+                alert('회원가입 중 오류가 발생했습니다.');
+            });
+    });
+</script>
+</body>
+</html>
