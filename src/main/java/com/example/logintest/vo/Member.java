@@ -24,13 +24,16 @@ public class Member {
 
     @Column(name = "name")
     private String name;
+    @Column(name = "age")
+    private Long age;
 
     @Builder
-    public Member(Long id, String email, String pwd, String name){
+    public Member(Long id, String email, String pwd, String name, Long age){
         this.id =id;
         this.email = email;
         this.pwd = pwd;
         this.name = name;
+        this.age = age;
     }
 }
 

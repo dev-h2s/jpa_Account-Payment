@@ -3,26 +3,34 @@ package com.example.logintest.controller;
 import com.example.logintest.dto.MemberDto;
 import com.example.logintest.repository.MemberRepository;
 import com.example.logintest.service.MemberService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
-@RestController
+@Controller
 public class MemberController {
     @Autowired  private MemberRepository memberRepository;
     @Autowired private MemberService memberService;
-    @PostMapping(value = "member/sign")
-    public ResponseEntity<String> signMember(@RequestBody MemberDto memberDto) throws Exception {
-    try {
-        memberService.memberJoin(memberDto);
-        return ResponseEntity.ok("회원가입 완료");
-    }catch (Exception e){
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("회원가입중 오류 발생 " + e.getMessage());
+
+
+
+    @GetMapping("/member/sign")
+    public String getSignPage() {
+        return "sign";
     }
+    @PostMapping(value = "/member/sign")
+    public ResponseEntity<String> signMember(@RequestBody @Valid MemberDto memberDto) {
+        try {
+            memberService.memberJoin(memberDto);
+            return new ResponseEntity<>("회원가입 성공", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("회원가입 실패", HttpStatus.BAD_REQUEST);
+        }
     }
+
 }
