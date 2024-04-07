@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>my Page</title>
+    <h2>마이페이지 입니다</h2>
+
+</head>
+<body>
+<h1 id="mypage"></h1>
+
+<script>
+    const token = localStorage.getItem('authToken');
+    function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+    }
+
+    const email = getQueryParam('email');
+    if(email) {
+        document.getElementById('mypage').innerText = `${email}님의 mypage입니다`;
+    }
+</script>
+</body>
+</html>

@@ -33,6 +33,13 @@ public class MemberController {
         return "redirect:/main.html";
     }
 
+    @GetMapping("/mapage")
+    public String mypage() {
+
+        return "redirect:/mypage.html";
+    }
+
+
     @GetMapping("member/login")
     public String login() {
         return "login";

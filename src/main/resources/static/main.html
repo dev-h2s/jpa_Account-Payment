@@ -1,22 +1,38 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>Main Page</title>
-</head>
-<body>
-<h1 id="welcomeMessage"></h1>
+    <!DOCTYPE html>
+    <html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <title>Main Page</title>
+    </head>
+    <body>
+    <h1 id="welcomeMessage"></h1>
 
-<script>
-    function getQueryParam(param) {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get(param);
-    }
+    <button id="myPageButton">마이페이지</button>
 
-    const email = getQueryParam('email');
-    if(email) {
-        document.getElementById('welcomeMessage').innerText = `반갑습니다 ${email}님`;
-    }
-</script>
-</body>
-</html>
+
+    <script>
+        const token = localStorage.getItem('authToken');
+
+        document.getElementById('myPageButton').addEventListener('click', function() {
+            // 토큰이 있는지 확인하고, 없으면 로그인 페이지로 리다이렉트
+            if(token) {
+                // 토큰이 있으면 mypage.html로 이동
+                window.location.href = 'mypage.html';
+            } else {
+                // 토큰이 없으면 로그인 페이지로 리다이렉트
+                window.location.href = 'login.html';
+            }
+            });
+
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        const email = getQueryParam('email');
+        if(email) {
+            document.getElementById('welcomeMessage').innerText = `반갑습니다 ${email}님`;
+        }
+    </script>
+    </body>
+    </html>
