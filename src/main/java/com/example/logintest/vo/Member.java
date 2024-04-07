@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -28,13 +29,16 @@ public class Member {
     @Column(name = "age")
     private Long age;
 
+    @Column(name = "roles")
+    private String roles;
     @Builder
-    public Member(Long id, String email, String pwd, String name, Long age, PasswordEncoder passwordEncoder){
+    public Member(Long id, String email, String pwd, String name, Long age, String roles){
         this.id =id;
         this.email = email;
         this.pwd = pwd;
         this.name = name;
         this.age = age;
+        this.roles = roles;
     }
 }
 

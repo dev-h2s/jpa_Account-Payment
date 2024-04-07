@@ -29,6 +29,8 @@ public class MemberDto {
 
     private Long age;
 
+    private String roles;
+
     public Member toEntity(){
         return Member.builder()
                 .id(id)
@@ -36,6 +38,7 @@ public class MemberDto {
                 .pwd(pwd)
                 .name(name)
                 .age(age)
+                .roles(roles)
                 .build();
     }
 }

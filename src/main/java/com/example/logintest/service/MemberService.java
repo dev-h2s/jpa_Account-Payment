@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +29,7 @@ public class MemberService {
                     .name(memberDto.getName())
                     .pwd(passwordEncoder.encode(memberDto.getPwd())) // 패스워드 인코딩
                     .age(memberDto.getAge())
+                    .roles(Collections.singletonList("ROLE_ADMIN").toString()) // 최초 가입시 USER 로 설정
                     .build();
 
                 memberRepository.save(member);

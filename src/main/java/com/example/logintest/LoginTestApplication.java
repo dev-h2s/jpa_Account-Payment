@@ -9,6 +9,7 @@ public class LoginTestApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(LoginTestApplication.class, args);
+
     }
 
 }
