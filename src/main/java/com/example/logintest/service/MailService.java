@@ -1,9 +1,13 @@
 package com.example.logintest.service;
 
 
+import com.example.logintest.dto.MemberDto;
+import com.example.logintest.repository.MemberRepository;
+import com.example.logintest.vo.Member;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +16,27 @@ import org.springframework.stereotype.Service;
 public class MailService {
 
     private final JavaMailSender javaMailSender;
-    private static final String senderEmail= "메일을 보낼 구글 이메일";
+    private static final String senderEmail= "shsdev96@gmail.com";
     private static int number;
+
+
+
+
+    @Autowired private MemberRepository memberRepository;
+
+
+        public boolean emailOk(String email) {
+            // 중복 이메일 검사
+            boolean exists = memberRepository.existsByEmail(email);
+            if (exists) {
+                throw new IllegalArgumentException("중복된 이메일입니다.");
+            }
+            if (!MemberUtil.isValidEmail(email)) {
+                throw new IllegalArgumentException("잘못된 이메일 형식입니다.");
+            }
+            return true; // 이메일이 유효하고 중복되지 않은 경우 true 반환
+        }
+
 
     // 랜덤으로 숫자 생성
     public static void createNumber() {
