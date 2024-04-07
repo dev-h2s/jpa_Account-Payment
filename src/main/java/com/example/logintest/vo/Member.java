@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
 @Getter
@@ -28,7 +29,7 @@ public class Member {
     private Long age;
 
     @Builder
-    public Member(Long id, String email, String pwd, String name, Long age){
+    public Member(Long id, String email, String pwd, String name, Long age, PasswordEncoder passwordEncoder){
         this.id =id;
         this.email = email;
         this.pwd = pwd;

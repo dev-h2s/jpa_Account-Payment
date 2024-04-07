@@ -38,15 +38,23 @@
 
 
         // 인증 이메일 전송
-        @ResponseBody
         @PostMapping("member/mailSend")
-        public String MailSend(String mail){
+        @ResponseBody
+        public HashMap<String, Object> mailSend(@RequestParam String mail) {
+            HashMap<String, Object> map = new HashMap<>();
 
-            int number = mailService.sendMail(mail);
+            try {
+                number = mailService.sendMail(mail);
+                String num = String.valueOf(number);
 
-            String num = "" + number;
+                map.put("success", Boolean.TRUE);
+                map.put("number", num);
+            } catch (Exception e) {
+                map.put("success", Boolean.FALSE);
+                map.put("error", e.getMessage());
+            }
 
-            return num;
+            return map;
         }
 
         // 인증번호 일치여부 확인

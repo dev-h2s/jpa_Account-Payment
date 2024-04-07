@@ -24,7 +24,7 @@
     <button type="button" id="checkEmail">중복 확인</button>
     <label id="emailMessage" style="display:none;"></label> <!-- 이메일 중복 표시 영역 -->
     <!-- 인증 보내기 버튼    -->
-    <button type="button" id="authenticationCode">이메일 인증 코드 보내기</button><br>
+    <button type="button" id="mailSend">이메일 인증 코드 보내기</button><br>
     <label for="emailCode">이메일 인증 코드:</label><br> <!-- 이메일 인증 코드 입력란 추가 -->
     <input type="text" id="emailCode" name="emailCode"><br>
     <button type="button" id="verifyCode">인증 확인</button><br> <!-- 인증 확인 버튼 추가 -->
@@ -77,9 +77,9 @@
                     alert('이메일 중복 확인 중 오류가 발생했습니다.');
                 });
         }
-    });
+    });``
 //이메일 인증코드 보내기
-    document.getElementById("authenticationCode").addEventListener("click", function() {
+    document.getElementById("mailSend").addEventListener("click", function() {
         if (!isEmailChecked) {
             alert("중복 확인을 먼저 진행해주세요.");
             return; // 중복 확인이 이루어지지 않았으면  종료
@@ -116,10 +116,13 @@
         }
     });
 
+
     document.getElementById("verifyCode").addEventListener("click", function() {
-        var code = document.getElementById("emailCode").value;
-        if (code.trim() !== "") {
-            fetch('/member/verifyCode?code=' + code)
+        var userNumber = document.getElementById("emailCode").value;
+        var messageElement = document.getElementById("emailMessage"); // 인증번호 메시지를 표시할 요소
+
+        if (userNumber.trim() !== "") {
+            fetch('/mailCheck?userNumber=' + encodeURIComponent(userNumber))
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('서버 응답이 실패했습니다.');
@@ -127,18 +130,21 @@
                     return response.json();
                 })
                 .then(data => {
-                    if (data.valid) {
-                        alert("인증 코드가 올바릅니다.");
-                    } else {
-                        alert("올바르지 않은 인증 코드입니다.");
+                    if (data) { // data가 true일 경우 인증번호가 일치함
+                        messageElement.innerHTML = "인증번호가 확인되었습니다.";
+                        messageElement.className = "success";
+                    } else { // data가 false일 경우 인증번호가 일치하지 않음
+                        messageElement.innerHTML = "인증번호를 다시 확인하세요.";
+                        messageElement.className = "error";
                     }
+                    messageElement.style.display = "block";
                 })
                 .catch(error => {
                     console.error('오류 발생:', error);
-                    alert('인증 코드 확인 중 오류가 발생했습니다.');
+                    alert('인증번호 확인 중 오류가 발생했습니다.');
                 });
         } else {
-            alert("인증 코드를 입력하세요.");
+            alert("인증번호를 입력하세요.");
         }
     });
 
@@ -167,6 +173,10 @@
                     throw new Error('서버 응답이 실패했습니다.');
                 }
                 return response.text();
+            })
+            .then(data => {
+                alert(data); // 서버로부터의 응답 메시지 표시
+                window.location.href = 'login.html'; // 여기에 페이지 이동 코드를 추가
             })
             .then(data => {
                 alert(data); // 서버로부터의 응답 메시지 표시

@@ -6,6 +6,7 @@ import com.example.logintest.repository.MemberRepository;
 import com.example.logintest.vo.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -14,24 +15,17 @@ import org.springframework.stereotype.Service;
 public class MemberService {
 
     @Autowired private MemberRepository memberRepository;
-
+    @Autowired private  PasswordEncoder passwordEncoder;
 
 
 
         public void memberJoin( MemberDto memberDto) throws Exception{
-            // 중복 아이디 검사 -> 메일 서비스로 이동
-//            boolean exists = memberRepository.existsByEmail(memberDto.getEmail());
-//            if (exists) {
-//                throw new IllegalArgumentException("중복된 이메일 입니다");
-//            }
-//            if(!MemberUtil.isValidEmail(memberDto.getEmail())){
-//                throw new IllegalArgumentException("잘못된 이메일 형식입니다.");
-//            }
+
 
             Member member = Member.builder()
                     .email(memberDto.getEmail())
                     .name(memberDto.getName())
-                    .pwd(memberDto.getPwd())
+                    .pwd(passwordEncoder.encode(memberDto.getPwd())) // 패스워드 인코딩
                     .age(memberDto.getAge())
                     .build();
 
