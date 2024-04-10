@@ -129,7 +129,7 @@
                     }
                     return response.json();
                 })
-                .then(data => {
+                .then(data => { // -> 백에서 결과값을 줘야한다 프론트에선 불러와서 보여주기만
                     if (data) { // data가 true일 경우 인증번호가 일치함
                         messageElement.innerHTML = "인증번호가 확인되었습니다.";
                         messageElement.className = "success";

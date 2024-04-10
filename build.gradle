@@ -37,7 +37,7 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-security' // 시큐리티
     implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
-    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5' //인증을 중요시하기때문에 implementation으로 써야함 -> runtime은 실행했을때 알수 있다.(사전에 파악못함, 장점: 속도 빠름)
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
 
 }

@@ -27,7 +27,7 @@ public class SecurityConfig  {
     public SecurityFilterChain filterChain(HttpSecurity http, JwtTokenProvider jwtTokenProvider) throws Exception {
 
         http    .csrf((csrfConfig) ->
-                        csrfConfig.disable()
+                        csrfConfig.disable() //네트워크 장비에서 걸려줘야.. Lb에서 대신 해야할수도 있다
                 )
                 .sessionManagement((sessionManagement) ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -37,7 +37,7 @@ public class SecurityConfig  {
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
                         UsernamePasswordAuthenticationFilter.class)
-                .authorizeRequests(); // 권한요청 처리 설정 메서드
+                .authorizeRequests();
         return http.build();
     }
 

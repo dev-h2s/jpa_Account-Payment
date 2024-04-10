@@ -30,7 +30,7 @@ public class Member {
     private Long age;
 
     @Column(name = "roles")
-    private String roles;
+    private String roles; // roles를 spring 권장한다 -> 확인하기위해 db볼필요없어 앞단, 뒤에서 db연산이 불필요
     @Builder
     public Member(Long id, String email, String pwd, String name, Long age, String roles){
         this.id =id;
